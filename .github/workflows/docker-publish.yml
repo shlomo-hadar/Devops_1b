@@ -13,6 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Debug - List Files
+        run: ls -R
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -23,21 +26,23 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Build and Push Node.js Application
+      # Changed ./Node to ./node to fix case-sensitivity error
       - name: Build and push Node App
         uses: docker/build-push-action@v5
         with:
-          context: ./Node
-          file: ./Node/Dockerfile
+          context: ./node
+          file: ./node/Dockerfile
           push: true
           # Replace 'devops-node-app' with your desired image name
           tags: ${{ secrets.DOCKER_USERNAME }}/devops-node-app:latest
 
       # Build and Push PHP Application
+      # Changed ./PHP to ./php to fix case-sensitivity error
       - name: Build and push PHP App
         uses: docker/build-push-action@v5
         with:
-          context: ./PHP
-          file: ./PHP/Dockerfile
+          context: ./php
+          file: ./php/Dockerfile
           push: true
           # Replace 'devops-php-app' with your desired image name
           tags: ${{ secrets.DOCKER_USERNAME }}/devops-php-app:latest
